@@ -18,6 +18,7 @@ package com.sxenon.arch.controller.impl;
 
 import android.Manifest;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 
 import com.sxenon.arch.controller.IController;
@@ -60,36 +61,13 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
                 if (permissionHelper.getPermissionEvent() == null) {
                     throw new IllegalStateException("Please call requestPermissionsCompact in controller(view) or requestPermissions in controllerVisitor(presenter)");
                 }
-
                 permissionHelper.onRequestPermissionsResult(permissions, grantResults);
                 return true;
             }
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception ignore){
+
         }
         return false;
-    }
-
-    /**
-     * Please ignore the return value unless the router type is COMPACT_ACTIVITY.
-     *
-     * @return Handle the request by self or deliver to its fragment,if the router type is COMPACT_ACTIVITY.
-     */
-    public final boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (isRequestingSystemAlertPermission) {
-            permissionHelper.onRequestSystemAlertPermissionResult(resultCode);
-            isRequestingSystemAlertPermission = false;
-        } else if (getController().startActivityForResultBySelf(requestCode)) {
-            handleActivityResult(requestCode, resultCode, data);
-        } else {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void handleActivityResult(int requestCode, int resultCode, Intent data) {
-
     }
 
     @Override

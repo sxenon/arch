@@ -43,19 +43,16 @@ public interface IController<P extends AbstractControllerVisitorAsPresenter> ext
 
     void startActivityForResult(Intent intent, int requestCode);
 
-    void startActivityForResult(Intent intent, int requestCode, @Nullable Bundle options);
+    void startActivityForResultWithHandler(Intent intent, int requestCode, ActivityResultHandler handler);
 
-    /**
-     * @return Return false, if the router is instance of FragmentActivity and its supportFragment start activity,otherwise true.
-     */
-    boolean startActivityForResultBySelf(int requestCode);
+    void startActivityForResultWithHandler(Intent intent, int requestCode, @Nullable Bundle options,ActivityResultHandler handler);
 
     Activity getActivityCompact();
 
     void requestPermissionsCompact(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting);
 
     /**
-     * @return Return false if the router is instance of FragmentActivity and its supportFragment request the permission,otherwise true.
+     * @return Return false if the controller is instance of FragmentActivity and its supportFragment request the permission,otherwise true.
      */
     boolean requestPermissionsBySelf(int requestCode);
 

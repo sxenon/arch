@@ -16,7 +16,6 @@
 
 package com.sxenon.arch.controller;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.sxenon.arch.mvp.IPresenter;
@@ -28,8 +27,6 @@ import com.sxenon.arch.permission.OnPermissionCallback;
  */
 
 public interface IControllerVisitor<C extends IController> extends IPresenter<C>, OnPermissionCallback {
-
-    void handleActivityResult(int requestCode, int resultCode, Intent data);
 
     void requestPermissions(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting);
 

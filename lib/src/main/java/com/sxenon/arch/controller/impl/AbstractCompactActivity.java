@@ -25,9 +25,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.sxenon.arch.controller.ActivityResultHandler;
 import com.sxenon.arch.controller.IActivity;
 
 /**
@@ -39,6 +39,7 @@ import com.sxenon.arch.controller.IActivity;
 public abstract class AbstractCompactActivity<P extends AbstractControllerVisitorAsPresenter> extends AppCompatActivity implements IActivity<P> {
     private P mPresenter;
     private boolean isResume;
+    private ActivityResultHandler activityResultHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,47 +67,43 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
     }
 
     @Override
+    public final ControllerType getControllerType() {
+        return ControllerType.COMPACT_ACTIVITY;
+    }
+
+    @Override
     public void requestPermissionsCompact(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting) {
         getPresenter().setPermissionEvent(requestCode, runnable, forceAccepting);
         ActivityCompat.requestPermissions(this, permissions, requestCode);
     }
 
     @Override
-    public final ControllerType getControllerType() {
-        return ControllerType.COMPACT_ACTIVITY;
+    public final void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (!mPresenter.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     @Override
-    public final void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (!mPresenter.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
-            //deliver to v4.fragment
-//            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                // 查找在Fragment中onRequestPermissionsResult方法并调用
-                if (fragment != null) {
-                    // 这里就会调用我们Fragment中的onRequestPermissionsResult方法
-                    fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-                }
-            }
-        }
+    public void startActivityForResultWithHandler(Intent intent, int requestCode, ActivityResultHandler handler) {
+        activityResultHandler = handler;
+        startActivityForResult(intent,requestCode);
+    }
+
+    @Override
+    public void startActivityForResultWithHandler(Intent intent, int requestCode, @Nullable Bundle options, ActivityResultHandler handler) {
+        activityResultHandler = handler;
+        startActivityForResult(intent, requestCode, options);
     }
 
     @Override
     protected final void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!mPresenter.onActivityResult(requestCode, resultCode, data)) {
-            //deliver to v4.fragment
-//            super.onActivityResult(requestCode, resultCode, data);
-            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                if (fragment != null && fragment.isAdded() && fragment.isVisible()) {
-                    fragment.onActivityResult(requestCode, resultCode, data);
-                }
-            }
+        if (activityResultHandler!=null){ //是Activity 发起的
+            activityResultHandler.onActivityResult(requestCode, resultCode, data);
+            activityResultHandler = null;
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    @Override
-    public boolean shouldKeepWhenInBackground(int finishForWhat) {
-        return true;
     }
 
     @Override

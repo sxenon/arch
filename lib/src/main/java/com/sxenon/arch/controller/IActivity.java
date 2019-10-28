@@ -24,12 +24,5 @@ import com.sxenon.arch.controller.impl.AbstractControllerVisitorAsPresenter;
  */
 
 public interface IActivity<P extends AbstractControllerVisitorAsPresenter> extends IController<P> {
-    /**
-     *
-     * @param finishForWhat finish background activities for what
-     * @return should keep or not
-     */
-    boolean shouldKeepWhenInBackground(int finishForWhat);
-
     boolean isFinishing();
 }

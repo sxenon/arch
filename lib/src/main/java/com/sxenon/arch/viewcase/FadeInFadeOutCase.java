@@ -5,8 +5,6 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.view.View;
 
-import com.sxenon.arch.IViewCase;
-
 /**
  * 淡入淡出动画
  * 所有的重复代码都是犯罪

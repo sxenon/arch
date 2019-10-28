@@ -4,13 +4,11 @@ import android.os.Handler;
 import android.os.Looper;
 
 public class GlobalUiHandler {
-    private static Handler uiHandler;
-
+    private static class HandlerHolder {
+        private static Handler uiHandler = new Handler(Looper.getMainLooper());
+    }
     public static Handler getInstance(){
-        if ( uiHandler==null ){
-            uiHandler = new Handler(Looper.getMainLooper());
-        }
-        return uiHandler;
+        return HandlerHolder.uiHandler;
     }
 
 }

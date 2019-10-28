@@ -28,6 +28,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.sxenon.arch.controller.ActivityResultHandler;
 import com.sxenon.arch.controller.IFragment;
 
 /**
@@ -37,10 +38,9 @@ import com.sxenon.arch.controller.IFragment;
 
 public abstract class AbstractSupportFragment<P extends AbstractControllerVisitorAsPresenter> extends Fragment implements IFragment<P> {
     private AppCompatActivity mHost;
-
     private P mPresenter;
-
     private boolean isResumed;
+    private ActivityResultHandler activityResultHandler;
 
     @Override
     public void onAttach(Activity activity) {
@@ -90,13 +90,20 @@ public abstract class AbstractSupportFragment<P extends AbstractControllerVisito
     }
 
     @Override
-    public final void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mPresenter.onActivityResult(requestCode, resultCode, data);
+    public void startActivityForResultWithHandler(Intent intent, int requestCode, ActivityResultHandler handler) {
+        activityResultHandler = handler;
+        startActivityForResult(intent,requestCode);
     }
 
     @Override
-    public final boolean startActivityForResultBySelf(int requestCode) {
-        return true;
+    public void startActivityForResultWithHandler(Intent intent, int requestCode, @Nullable Bundle options, ActivityResultHandler handler) {
+        activityResultHandler = handler;
+        startActivityForResult(intent, requestCode, options);
+    }
+
+    @Override
+    public final void onActivityResult(int requestCode, int resultCode, Intent data) {
+        activityResultHandler.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

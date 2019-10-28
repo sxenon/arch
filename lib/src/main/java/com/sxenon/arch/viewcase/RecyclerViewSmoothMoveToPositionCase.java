@@ -2,8 +2,6 @@ package com.sxenon.arch.viewcase;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.sxenon.arch.IViewCase;
-
 public class RecyclerViewSmoothMoveToPositionCase implements IViewCase {
 
     //目标项是否在最后一个可见项之后
