@@ -16,7 +16,7 @@
 
 package com.sxenon.arch.viewmodule.pull.list.strategy;
 
-import com.sxenon.arch.adapter.IWosaiAdapter;
+import com.sxenon.arch.adapter.IAdapter;
 import com.sxenon.arch.viewmodule.pull.IPullViewModule;
 import com.sxenon.arch.viewmodule.pull.list.strategy.adapter.IAdapterStrategy;
 
@@ -38,17 +38,17 @@ public class DummyListStrategy<R> extends BaseListStrategy<R> {
     }
 
     @Override
-    public void onFullList(IPullViewModule pullViewModule, List<R> data, IWosaiAdapter<R> adapter, PageInfo pageInfo, int action) {
+    public void onFullList(IPullViewModule pullViewModule, List<R> data, IAdapter<R> adapter, PageInfo pageInfo, int action) {
         getAdapterStrategy().onInitData(adapter, data);
     }
 
     @Override
-    public void onPartialList(IPullViewModule pullViewModule, List<R> data, IWosaiAdapter<R> adapter, PageInfo pageInfo, int action) {
+    public void onPartialList(IPullViewModule pullViewModule, List<R> data, IAdapter<R> adapter, PageInfo pageInfo, int action) {
         getAdapterStrategy().onInitData(adapter, data);
     }
 
     @Override
-    public void onEmptyList(IPullViewModule pullViewModule, PageInfo pageInfo, IWosaiAdapter<R> adapter, int action) {
+    public void onEmptyList(IPullViewModule pullViewModule, PageInfo pageInfo, IAdapter<R> adapter, int action) {
         pullViewModule.onEmpty();
     }
 
@@ -63,7 +63,7 @@ public class DummyListStrategy<R> extends BaseListStrategy<R> {
     }
 
     @Override
-    public void onError(IPullViewModule pullViewModule, Throwable throwable, IWosaiAdapter<R> adapter, PageInfo pageInfo) {
+    public void onError(IPullViewModule pullViewModule, Throwable throwable, IAdapter<R> adapter, PageInfo pageInfo) {
 
     }
 }

@@ -16,7 +16,6 @@
 
 package com.sxenon.arch.permission;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -135,7 +134,6 @@ public class PermissionCompat {
     /**
      * @return true if {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} is granted
      */
-    @TargetApi(Build.VERSION_CODES.M)
     public static boolean isSystemAlertGranted(@NonNull Context context) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
     }

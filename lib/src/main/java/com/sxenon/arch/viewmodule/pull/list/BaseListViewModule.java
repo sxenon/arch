@@ -18,7 +18,7 @@ package com.sxenon.arch.viewmodule.pull.list;
 
 import android.content.Context;
 
-import com.sxenon.arch.adapter.IWosaiAdapter;
+import com.sxenon.arch.adapter.IAdapter;
 import com.sxenon.arch.viewmodule.pull.BasePullViewModule;
 import com.sxenon.arch.viewmodule.pull.IPullLayout;
 import com.sxenon.arch.viewmodule.pull.IPullStrategy;
@@ -33,7 +33,7 @@ import java.util.List;
 
 public class BaseListViewModule<R, PL extends IPullLayout> extends BasePullViewModule<PL,IListStrategy<R>> implements IListViewModule<R> {
 
-    private IWosaiAdapter<R> mAdapter;
+    private IAdapter<R> mAdapter;
 
     private final int mDataSizeInFullPage;
 
@@ -54,11 +54,11 @@ public class BaseListViewModule<R, PL extends IPullLayout> extends BasePullViewM
      * @param adapter 列表控件相关的adapter
      */
     @Override
-    public void setAdapter(IWosaiAdapter<R> adapter) {
+    public void setAdapter(IAdapter<R> adapter) {
         mAdapter = adapter;
     }
 
-    public IWosaiAdapter<R> getAdapter() {
+    public IAdapter<R> getAdapter() {
         return mAdapter;
     }
 

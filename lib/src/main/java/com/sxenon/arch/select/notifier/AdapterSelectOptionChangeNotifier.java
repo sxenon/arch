@@ -1,14 +1,14 @@
 package com.sxenon.arch.select.notifier;
 
-import com.sxenon.arch.adapter.IWosaiAdapter;
+import com.sxenon.arch.adapter.IAdapter;
 import com.sxenon.arch.select.ISelectOptionChangeNotifier;
 
 import java.util.List;
 
 public class AdapterSelectOptionChangeNotifier<T> implements ISelectOptionChangeNotifier<T> {
-    private final IWosaiAdapter<T> adapter;
+    private final IAdapter<T> adapter;
 
-    public AdapterSelectOptionChangeNotifier(IWosaiAdapter<T> adapter) {
+    public AdapterSelectOptionChangeNotifier(IAdapter<T> adapter) {
         this.adapter = adapter;
     }
 
@@ -44,7 +44,7 @@ public class AdapterSelectOptionChangeNotifier<T> implements ISelectOptionChange
         }
     }
 
-    public IWosaiAdapter<T> getAdapter() {
+    public IAdapter<T> getAdapter() {
         return adapter;
     }
 

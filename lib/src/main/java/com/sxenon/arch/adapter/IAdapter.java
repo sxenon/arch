@@ -23,7 +23,7 @@ import java.util.List;
  * Created by Sui on 2016/11/20.
  */
 
-public interface IWosaiAdapter<T> {
+public interface IAdapter<T> {
     int getItemCount();
 
     void addItemFromEnd(T value);

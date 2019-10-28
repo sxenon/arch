@@ -27,5 +27,5 @@ import com.sxenon.arch.viewmodule.IViewModule;
 public interface IAdapterViewHolder<R> extends ISingleResponseHandler<R>, IViewModule {
     int getPosition();
 
-    <A extends IWosaiAdapter> A getAdapter();
+    <A extends IAdapter> A getAdapter();
 }

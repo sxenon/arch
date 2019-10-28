@@ -23,7 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sxenon.arch.adapter.IWosaiAdapter;
+import com.sxenon.arch.adapter.IAdapter;
 import com.sxenon.arch.viewmodule.pull.list.IListViewModule;
 
 import java.lang.reflect.Constructor;
@@ -36,7 +36,7 @@ import java.util.List;
  * Created by Sui on 2016/12/29.
  */
 
-public abstract class RecyclerViewAdapter<R> extends RecyclerView.Adapter<RecyclerViewViewHolder> implements IWosaiAdapter<R> {
+public abstract class RecyclerViewAdapter<R> extends RecyclerView.Adapter<RecyclerViewViewHolder> implements IAdapter<R> {
     private final SparseArray<RecyclerViewItemViewTypeEntity> mItemViewTypeEntryArray;
     private final IListViewModule<R> mContainer;
     private final Object mLock = new Object();

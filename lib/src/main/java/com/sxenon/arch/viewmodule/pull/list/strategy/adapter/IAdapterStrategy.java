@@ -16,7 +16,7 @@
 
 package com.sxenon.arch.viewmodule.pull.list.strategy.adapter;
 
-import com.sxenon.arch.adapter.IWosaiAdapter;
+import com.sxenon.arch.adapter.IAdapter;
 
 import java.util.List;
 
@@ -26,9 +26,9 @@ import java.util.List;
  */
 
 public interface IAdapterStrategy<R> {
-    void onMoreData(IWosaiAdapter<R> adapter, List<R> data);
+    void onMoreData(IAdapter<R> adapter, List<R> data);
 
-    void onNewData(IWosaiAdapter<R> adapter, List<R> data);
+    void onNewData(IAdapter<R> adapter, List<R> data);
 
-    void onInitData(IWosaiAdapter<R> adapter, List<R> data);
+    void onInitData(IAdapter<R> adapter, List<R> data);
 }

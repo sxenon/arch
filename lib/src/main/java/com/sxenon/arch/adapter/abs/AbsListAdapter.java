@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.sxenon.arch.adapter.IWosaiAdapter;
+import com.sxenon.arch.adapter.IAdapter;
 import com.sxenon.arch.viewmodule.pull.list.IListViewModule;
 
 import java.lang.reflect.Constructor;
@@ -35,7 +35,7 @@ import java.util.List;
  * Created by Sui on 2016/12/25.
  */
 
-public abstract class AbsListAdapter<R> extends BaseAdapter implements IWosaiAdapter<R> {
+public abstract class AbsListAdapter<R> extends BaseAdapter implements IAdapter<R> {
 
     private final Object mLock = new Object();
     private final AbsListItemViewTypeEntity[] mItemViewTypeEntryArray;

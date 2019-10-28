@@ -16,7 +16,7 @@
 
 package com.sxenon.arch.viewmodule.pull.list.strategy.adapter;
 
-import com.sxenon.arch.adapter.IWosaiAdapter;
+import com.sxenon.arch.adapter.IAdapter;
 
 import java.util.List;
 
@@ -27,17 +27,17 @@ import java.util.List;
 
 public class DefaultAdapterStrategy<R> implements IAdapterStrategy<R> {
     @Override
-    public void onMoreData(IWosaiAdapter<R> adapter, List<R> data) {
+    public void onMoreData(IAdapter<R> adapter, List<R> data) {
         adapter.addItemsFromEnd(data);
     }
 
     @Override
-    public void onNewData(IWosaiAdapter<R> adapter, List<R> data) {
+    public void onNewData(IAdapter<R> adapter, List<R> data) {
         adapter.addItemsFromStart(data);
     }
 
     @Override
-    public void onInitData(IWosaiAdapter<R> adapter, List<R> data) {
+    public void onInitData(IAdapter<R> adapter, List<R> data) {
         adapter.resetAllItems(data);
     }
 }

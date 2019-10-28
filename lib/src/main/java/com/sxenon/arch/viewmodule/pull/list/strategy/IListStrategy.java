@@ -16,7 +16,7 @@
 
 package com.sxenon.arch.viewmodule.pull.list.strategy;
 
-import com.sxenon.arch.adapter.IWosaiAdapter;
+import com.sxenon.arch.adapter.IAdapter;
 import com.sxenon.arch.viewmodule.pull.IPullStrategy;
 import com.sxenon.arch.viewmodule.pull.IPullViewModule;
 
@@ -28,12 +28,12 @@ import java.util.List;
  */
 
 public interface IListStrategy<R> extends IPullStrategy {
-    void onFullList(IPullViewModule pullViewModule, List<R> data, IWosaiAdapter<R> adapter, PageInfo pageInfo, int action);
+    void onFullList(IPullViewModule pullViewModule, List<R> data, IAdapter<R> adapter, PageInfo pageInfo, int action);
 
-    void onPartialList(IPullViewModule pullViewModule, List<R> data, IWosaiAdapter<R> adapter, PageInfo pageInfo, int action);
+    void onPartialList(IPullViewModule pullViewModule, List<R> data, IAdapter<R> adapter, PageInfo pageInfo, int action);
 
-    void onEmptyList(IPullViewModule pullViewModule, PageInfo pageInfo, IWosaiAdapter<R> adapter, int action);
+    void onEmptyList(IPullViewModule pullViewModule, PageInfo pageInfo, IAdapter<R> adapter, int action);
 
-    void onError(IPullViewModule pullViewModule, Throwable throwable, IWosaiAdapter<R> adapter, PageInfo pageInfo);
+    void onError(IPullViewModule pullViewModule, Throwable throwable, IAdapter<R> adapter, PageInfo pageInfo);
 
 }

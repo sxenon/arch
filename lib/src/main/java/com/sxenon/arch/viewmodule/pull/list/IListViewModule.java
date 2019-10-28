@@ -16,7 +16,7 @@
 
 package com.sxenon.arch.viewmodule.pull.list;
 
-import com.sxenon.arch.adapter.IWosaiAdapter;
+import com.sxenon.arch.adapter.IAdapter;
 import com.sxenon.arch.response.IListResponseHandler;
 import com.sxenon.arch.viewmodule.pull.IPullViewModule;
 
@@ -26,5 +26,5 @@ import com.sxenon.arch.viewmodule.pull.IPullViewModule;
  */
 
 public interface IListViewModule<R> extends IListResponseHandler<R>, IPullViewModule {
-    void setAdapter(IWosaiAdapter<R> adapter);
+    void setAdapter(IAdapter<R> adapter);
 }

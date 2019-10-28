@@ -17,11 +17,9 @@
 package com.sxenon.arch.permission;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -75,7 +73,7 @@ public class PermissionHelper {
      * used only for {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW}
      */
     public void onRequestSystemAlertPermissionResult(int resultCode) {
-        if ( AppCompatActivity.RESULT_OK == resultCode) {
+        if (AppCompatActivity.RESULT_OK == resultCode) {
             permissionCallback.onPermissionGranted((Runnable) permissionEvent.obj);
         } else {
             permissionCallback.onPermissionDeclined(permissionEvent.what, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW});
@@ -120,7 +118,6 @@ public class PermissionHelper {
      *
      * @return Return true if isSystemAlertGranted already;
      */
-    @TargetApi(Build.VERSION_CODES.M)
     public boolean showSystemAlertAtOnce(int what, Runnable runnable) {
         if (!PermissionCompat.isSystemAlertGranted(controller)) {
             permissionEvent = new Event();
