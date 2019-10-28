@@ -17,12 +17,15 @@
 package com.sxenon.arch.permission;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 
 import com.sxenon.arch.controller.IController;
@@ -134,12 +137,13 @@ public class PermissionCompat {
     /**
      * @return true if {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} is granted
      */
-    public static boolean isSystemAlertGranted(@NonNull Context context) {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
-    }
-
     public static boolean isSystemAlertGranted(@NonNull IController controller) {
-        return isSystemAlertGranted(controller.getContext());
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(controller.getContext());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void requestSystemAlertPermission(@NonNull IController controller, int requestCode){
+        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + controller.getContext().getPackageName()));
+        controller.startActivityForResult(intent, requestCode);
+    }
 }

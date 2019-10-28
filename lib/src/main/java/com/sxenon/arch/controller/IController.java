@@ -51,6 +51,8 @@ public interface IController<P extends AbstractControllerVisitorAsPresenter> ext
 
     void requestPermissionsCompact(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting);
 
+    void requestSystemAlertPermission(int requestCode, RequestSystemAlertPermissionResultHandler handler);
+
     /**
      * @return Return false if the controller is instance of FragmentActivity and its supportFragment request the permission,otherwise true.
      */

@@ -30,8 +30,6 @@ public interface IControllerVisitor<C extends IController> extends IPresenter<C>
 
     void requestPermissions(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting);
 
-    void requestSystemAlertPermission(int requestCode, Runnable runnable);
-
     void requestPermissionsAfterExplanation(@NonNull String[] permissions);
 
 

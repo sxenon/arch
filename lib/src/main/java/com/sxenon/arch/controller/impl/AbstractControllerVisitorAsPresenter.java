@@ -23,7 +23,9 @@ import android.support.annotation.NonNull;
 
 import com.sxenon.arch.controller.IController;
 import com.sxenon.arch.controller.IControllerVisitor;
+import com.sxenon.arch.controller.RequestSystemAlertPermissionResultHandler;
 import com.sxenon.arch.mvp.BasePresenter;
+import com.sxenon.arch.permission.PermissionCompat;
 import com.sxenon.arch.permission.PermissionHelper;
 
 import java.util.Arrays;
@@ -36,7 +38,7 @@ import java.util.Arrays;
 public abstract class AbstractControllerVisitorAsPresenter<C extends IController> extends BasePresenter<C> implements IControllerVisitor<C> {
 
     private final PermissionHelper permissionHelper;
-    private boolean isRequestingSystemAlertPermission;
+    private RequestSystemAlertPermissionResultHandler requestSystemAlertPermissionResultHandler;
 
     public static final String TAG = "AbstractControllerVisitorAsPresenter";
 
@@ -70,17 +72,30 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
         return false;
     }
 
+    public void requestSystemAlertPermission(int requestCode, RequestSystemAlertPermissionResultHandler handler){
+        if (PermissionCompat.isSystemAlertGranted(getController())){
+            handler.onResult(true);
+        }else {
+            requestSystemAlertPermissionResultHandler = handler;
+            PermissionCompat.requestSystemAlertPermission(getController(),requestCode);
+        }
+    }
+
+    public boolean onSystemAlertPermissionResult(){
+        if (requestSystemAlertPermissionResultHandler!=null){
+            requestSystemAlertPermissionResultHandler.onResult(PermissionCompat.isSystemAlertGranted(getController()));
+            requestSystemAlertPermissionResultHandler = null;
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public final void requestPermissions(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting) {
         if (Arrays.binarySearch(permissions, Manifest.permission.SYSTEM_ALERT_WINDOW) >= 0) {
             throw new IllegalArgumentException("Please Call requestSystemAlertPermission(int requestCode, Runnable runnable) for SYSTEM_ALERT_WINDOW!");
         }
         permissionHelper.requestPermissions(permissions, requestCode, runnable, forceAccepting);
-    }
-
-    @Override
-    public final void requestSystemAlertPermission(int requestCode, Runnable runnable) {
-        isRequestingSystemAlertPermission = !permissionHelper.showSystemAlertAtOnce(requestCode, runnable);
     }
 
     /**

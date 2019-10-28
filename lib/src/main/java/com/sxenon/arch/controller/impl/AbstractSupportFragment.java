@@ -30,6 +30,7 @@ import android.view.View;
 
 import com.sxenon.arch.controller.ActivityResultHandler;
 import com.sxenon.arch.controller.IFragment;
+import com.sxenon.arch.controller.RequestSystemAlertPermissionResultHandler;
 
 /**
  * 做最纯净的Fragment二次封装
@@ -102,7 +103,15 @@ public abstract class AbstractSupportFragment<P extends AbstractControllerVisito
     }
 
     @Override
+    public void requestSystemAlertPermission(int requestCode, RequestSystemAlertPermissionResultHandler handler) {
+        getPresenter().requestSystemAlertPermission(requestCode, handler);
+    }
+
+    @Override
     public final void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (getPresenter().onSystemAlertPermissionResult()){
+            return;
+        }
         activityResultHandler.onActivityResult(requestCode, resultCode, data);
     }
 

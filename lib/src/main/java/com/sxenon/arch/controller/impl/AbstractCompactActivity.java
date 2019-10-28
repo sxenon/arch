@@ -29,6 +29,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.sxenon.arch.controller.ActivityResultHandler;
 import com.sxenon.arch.controller.IActivity;
+import com.sxenon.arch.controller.RequestSystemAlertPermissionResultHandler;
+import com.sxenon.arch.permission.PermissionCompat;
 
 /**
  * To be the purest wrapper for Activity
@@ -85,6 +87,11 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
     }
 
     @Override
+    public void requestSystemAlertPermission(int requestCode, RequestSystemAlertPermissionResultHandler handler) {
+        getPresenter().requestSystemAlertPermission(requestCode, handler);
+    }
+
+    @Override
     public void startActivityForResultWithHandler(Intent intent, int requestCode, ActivityResultHandler handler) {
         activityResultHandler = handler;
         startActivityForResult(intent,requestCode);
@@ -98,6 +105,9 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
 
     @Override
     protected final void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (getPresenter().onSystemAlertPermissionResult()){
+            return;
+        }
         if (activityResultHandler!=null){ //是Activity 发起的
             activityResultHandler.onActivityResult(requestCode, resultCode, data);
             activityResultHandler = null;
