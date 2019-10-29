@@ -60,7 +60,7 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
         try {
             if (getController().requestPermissionsBySelf(requestCode)) {
                 if (permissionHelper.getPermissionEvent() == null) {
-                    throw new IllegalStateException("Please call requestPermissionsWithHandler in controller(view) or requestPermissions in controllerVisitor(presenter)");
+                    throw new IllegalStateException("Please call requestPermissionsWithHandler in controller(view) or checkIfHasSpecialPermissions in controllerVisitor(presenter)");
                 }
                 permissionHelper.onRequestPermissionsResult(permissions, grantResults);
                 return true;
@@ -91,15 +91,13 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
         return false;
     }
 
-    @Override
-    public final void requestPermissions(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting) {
+    void checkIfHasSpecialPermissions(@NonNull String[] permissions) {
         if (Arrays.binarySearch(permissions, Manifest.permission.SYSTEM_ALERT_WINDOW) >= 0) {
             throw new IllegalArgumentException("Please Call requestSpecialPermission for SYSTEM_ALERT_WINDOW!");
         }
         if (Arrays.binarySearch(permissions, Manifest.permission.WRITE_SETTINGS) >= 0) {
             throw new IllegalArgumentException("Please Call requestSpecialPermission(int requestCode, Runnable runnable) for WRITE_SETTINGS!");
         }
-        permissionHelper.requestPermissions(permissions, requestCode, runnable, forceAccepting);
     }
 
     @Override
@@ -117,10 +115,6 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
 
     }
 
-    @Override
-    public final void requestPermissionsAfterExplanation(@NonNull String[] permissions) {
-        permissionHelper.requestPermissionsAfterExplanation(permissions);
-    }
     //Permission end
 
     @NonNull

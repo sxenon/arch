@@ -74,6 +74,7 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
 
     @Override
     public void requestPermissionsWithHandler(@NonNull String[] permissions, int requestCode, Runnable runnable) {
+        getPresenter().checkIfHasSpecialPermissions(permissions);
         getPresenter().setPermissionEvent(requestCode, runnable);
         ActivityCompat.requestPermissions(this, permissions, requestCode);
     }

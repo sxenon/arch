@@ -71,6 +71,7 @@ public abstract class AbstractSupportFragment<P extends AbstractControllerVisito
 
     @Override
     public void requestPermissionsWithHandler(@NonNull String[] permissions, int requestCode, Runnable runnable) {
+        getPresenter().checkIfHasSpecialPermissions(permissions);
         getPresenter().setPermissionEvent(requestCode, runnable);
         requestPermissions(permissions, requestCode);
     }

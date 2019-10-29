@@ -68,30 +68,6 @@ public class PermissionHelper {
         permissionEvent.data = new Bundle();
     }
 
-    public void requestPermissions(@NonNull String[] permissions, int what, Runnable runnable, boolean forceAccepting) {
-        List<String> permissionsNeeded = PermissionCompat.getDeclinedPermissionList(controller, permissions);
-        if (permissionsNeeded.isEmpty()) {
-            runnable.run();
-            return;
-        }
-
-        String[] permissionsNeedArray = permissionsNeeded.toArray(new String[permissionsNeeded.size()]);
-        List<String> permissionPermanentlyDeniedList = PermissionCompat.getPermissionPermanentlyDeniedList(controller, permissionsNeedArray);
-        if (!permissionPermanentlyDeniedList.isEmpty()) {
-            permissionCallback.onPermissionPermanentlyDeclined(what, permissions);
-            return;
-        }
-
-        setPermissionEvent(what, runnable);
-    }
-
-    /**
-     * to be called when explanation is presented to the user
-     */
-    public void requestPermissionsAfterExplanation(@NonNull String[] permissions) {
-        controller.requestPermissionsWithHandler(permissions, permissionEvent.what, (Runnable) permissionEvent.obj);
-    }
-
     /**
      * internal usage.
      */
