@@ -126,11 +126,6 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
     }
 
     @Override
-    public boolean shouldShowRequestPermissionRationale(@NonNull String permission) {
-        return getPresenter().shouldShowRequestPermissionRationale(permission);
-    }
-
-    @Override
     public Bundle getBundle() {
         return getIntent().getExtras();
     }
