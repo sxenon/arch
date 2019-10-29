@@ -43,15 +43,26 @@ public interface IController<P extends AbstractControllerVisitorAsPresenter> ext
 
     void startActivity(Intent intent, Bundle options);
 
+    @Deprecated
     void startActivityForResult(Intent intent, int requestCode);
 
+    @Deprecated
+    void startActivityForResult(Intent intent, int requestCode,@Nullable Bundle options);
+
+    /**
+     * 以下两个方法会调用相应的startActivityForResult 方法，并且做些额外的工作，请使用这两个方法
+     */
     void startActivityForResultWithHandler(Intent intent, int requestCode, ActivityResultHandler handler);
 
     void startActivityForResultWithHandler(Intent intent, int requestCode, @Nullable Bundle options,ActivityResultHandler handler);
 
-    Activity getActivityCompact();
+    /**
+     * 以下方法会调用Activity 或 Fragment的requestPermissions 方法，并且做些额外的工作，请使用这个方法请求危险权限
+     */
+    void requestPermissionsWithAction(@NonNull String[] permissions, int requestCode, Runnable runnable);
 
-    void requestPermissionsWithHandler(@NonNull String[] permissions, int requestCode, Runnable runnable);
+    @Deprecated
+    void requestPermissions(@NonNull String[] permissions, int requestCode);
 
     /**
      * There are a couple of permissions that don't behave like normal and dangerous permissions.
@@ -61,12 +72,9 @@ public interface IController<P extends AbstractControllerVisitorAsPresenter> ext
      */
     void requestSpecialPermission(int requestCode, RequestSpecialPermissionResultHandler handler, String specialPermission);
 
-    /**
-     * @return Return false if the controller is instance of FragmentActivity and its supportFragment request the permission,otherwise true.
-     */
-    boolean requestPermissionsBySelf(int requestCode);
-
     boolean shouldShowRequestPermissionRationale(String permission);
+
+    Activity getActivityCompact();
 
     P bindPresenter();
 

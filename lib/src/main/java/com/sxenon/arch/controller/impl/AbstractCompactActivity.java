@@ -73,7 +73,7 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
     }
 
     @Override
-    public void requestPermissionsWithHandler(@NonNull String[] permissions, int requestCode, Runnable runnable) {
+    public void requestPermissionsWithAction(@NonNull String[] permissions, int requestCode, Runnable runnable) {
         getPresenter().checkIfHasSpecialPermissions(permissions);
         getPresenter().setPermissionEvent(requestCode, runnable);
         ActivityCompat.requestPermissions(this, permissions, requestCode);
@@ -81,7 +81,7 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
 
     @Override
     public final void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (!mPresenter.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+        if (!mPresenter.onRequestPermissionsResult(permissions, grantResults)) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }

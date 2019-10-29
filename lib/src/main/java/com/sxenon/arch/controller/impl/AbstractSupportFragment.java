@@ -70,15 +70,10 @@ public abstract class AbstractSupportFragment<P extends AbstractControllerVisito
     }
 
     @Override
-    public void requestPermissionsWithHandler(@NonNull String[] permissions, int requestCode, Runnable runnable) {
+    public void requestPermissionsWithAction(@NonNull String[] permissions, int requestCode, Runnable runnable) {
         getPresenter().checkIfHasSpecialPermissions(permissions);
         getPresenter().setPermissionEvent(requestCode, runnable);
         requestPermissions(permissions, requestCode);
-    }
-
-    @Override
-    public final boolean requestPermissionsBySelf(int requestCode) {
-        return true;
     }
 
     @Override
@@ -88,7 +83,7 @@ public abstract class AbstractSupportFragment<P extends AbstractControllerVisito
 
     @Override
     public final void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        mPresenter.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mPresenter.onRequestPermissionsResult(permissions, grantResults);
     }
 
     @Override

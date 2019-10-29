@@ -19,6 +19,7 @@ package com.sxenon.arch.controller.impl;
 import android.Manifest;
 import android.support.annotation.NonNull;
 
+import com.sxenon.arch.Event;
 import com.sxenon.arch.controller.IController;
 import com.sxenon.arch.controller.IControllerVisitor;
 import com.sxenon.arch.controller.handler.RequestSpecialPermissionResultHandler;
@@ -51,24 +52,16 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
         permissionHelper.setPermissionEvent(what, runnable);
     }
 
-    /**
-     * Please ignore the return value unless the router type is COMPACT_ACTIVITY.
-     *
-     * @return Handle the result by self or deliver to its fragment,if the router type is COMPACT_ACTIVITY.
-     */
-    public boolean onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        try {
-            if (getController().requestPermissionsBySelf(requestCode)) {
-                if (permissionHelper.getPermissionEvent() == null) {
-                    throw new IllegalStateException("Please call requestPermissionsWithHandler in controller(view) or checkIfHasSpecialPermissions in controllerVisitor(presenter)");
-                }
-                permissionHelper.onRequestPermissionsResult(permissions, grantResults);
-                return true;
-            }
-        } catch (Exception ignore){
+    public Event getPermissionEvent(){
+        return permissionHelper.getPermissionEvent();
+    }
 
+    public boolean onRequestPermissionsResult(@NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (getPermissionEvent()==null){
+            return false;
         }
-        return false;
+        permissionHelper.onRequestPermissionsResult(permissions, grantResults);
+        return true;
     }
 
     void requestSpecialPermission(int requestCode, RequestSpecialPermissionResultHandler handler, String specialPermission){
