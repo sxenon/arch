@@ -30,7 +30,7 @@ import android.view.View;
 
 import com.sxenon.arch.controller.handler.ActivityResultHandler;
 import com.sxenon.arch.controller.IFragment;
-import com.sxenon.arch.controller.handler.RequestOverlayPermissionResultHandler;
+import com.sxenon.arch.controller.handler.RequestSpecialPermissionResultHandler;
 
 /**
  * 做最纯净的Fragment二次封装
@@ -103,13 +103,13 @@ public abstract class AbstractSupportFragment<P extends AbstractControllerVisito
     }
 
     @Override
-    public void requestOverlayPermission(int requestCode, RequestOverlayPermissionResultHandler handler) {
-        getPresenter().requestOverlayPermission(requestCode, handler);
+    public void requestSpecialPermission(int requestCode, RequestSpecialPermissionResultHandler handler, String specialPermission) {
+        getPresenter().requestSpecialPermission(requestCode, handler,specialPermission);
     }
 
     @Override
     public final void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (getPresenter().onOverlayPermissionResult()){
+        if (getPresenter().onSpecialPermissionResult()){
             return;
         }
         activityResultHandler.onResult(requestCode, resultCode, data);

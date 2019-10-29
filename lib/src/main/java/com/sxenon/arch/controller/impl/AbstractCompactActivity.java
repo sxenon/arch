@@ -29,7 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.sxenon.arch.controller.handler.ActivityResultHandler;
 import com.sxenon.arch.controller.IActivity;
-import com.sxenon.arch.controller.handler.RequestOverlayPermissionResultHandler;
+import com.sxenon.arch.controller.handler.RequestSpecialPermissionResultHandler;
 
 /**
  * To be the purest wrapper for Activity
@@ -86,8 +86,8 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
     }
 
     @Override
-    public void requestOverlayPermission(int requestCode, RequestOverlayPermissionResultHandler handler) {
-        getPresenter().requestOverlayPermission(requestCode, handler);
+    public void requestSpecialPermission(int requestCode, RequestSpecialPermissionResultHandler handler, String specialPermission) {
+        getPresenter().requestSpecialPermission(requestCode, handler, specialPermission);
     }
 
     @Override
@@ -104,7 +104,7 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
 
     @Override
     protected final void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (getPresenter().onOverlayPermissionResult()){
+        if (getPresenter().onSpecialPermissionResult()){
             return;
         }
         if (activityResultHandler!=null){ //是Activity 发起的

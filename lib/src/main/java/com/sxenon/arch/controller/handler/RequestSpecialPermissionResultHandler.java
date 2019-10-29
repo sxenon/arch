@@ -1,5 +1,5 @@
 package com.sxenon.arch.controller.handler;
 
-public interface RequestOverlayPermissionResultHandler {
+public interface RequestSpecialPermissionResultHandler {
     void onResult(boolean can);
 }

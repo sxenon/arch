@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
 
 import com.sxenon.arch.controller.IController;
 import com.sxenon.arch.controller.IControllerVisitor;
-import com.sxenon.arch.controller.handler.RequestOverlayPermissionResultHandler;
+import com.sxenon.arch.controller.handler.RequestSpecialPermissionResultHandler;
 import com.sxenon.arch.mvp.BasePresenter;
 import com.sxenon.arch.permission.PermissionCompat;
 import com.sxenon.arch.permission.PermissionHelper;
@@ -36,7 +36,8 @@ import java.util.Arrays;
 public abstract class AbstractControllerVisitorAsPresenter<C extends IController> extends BasePresenter<C> implements IControllerVisitor<C> {
 
     private final PermissionHelper permissionHelper;
-    private RequestOverlayPermissionResultHandler requestOverlayPermissionResultHandler;
+    private RequestSpecialPermissionResultHandler requestSpecialPermissionResultHandler;
+    private String sepecialPermission;
 
     public static final String TAG = "AbstractControllerVisitorAsPresenter";
 
@@ -70,19 +71,21 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
         return false;
     }
 
-    public void requestOverlayPermission(int requestCode, RequestOverlayPermissionResultHandler handler){
-        if (PermissionCompat.isOverlayGranted(getController())){
+    public void requestSpecialPermission(int requestCode, RequestSpecialPermissionResultHandler handler, String specialPermission){
+        if (PermissionCompat.specialPermissionGranted(getController(),specialPermission)){
             handler.onResult(true);
         }else {
-            requestOverlayPermissionResultHandler = handler;
-            PermissionCompat.requestOverlayPermission(getController(),requestCode);
+            requestSpecialPermissionResultHandler = handler;
+            this.sepecialPermission = specialPermission;
+            PermissionCompat.requestSpecialPermission(getController(),requestCode,specialPermission);
         }
     }
 
-    public boolean onOverlayPermissionResult(){
-        if (requestOverlayPermissionResultHandler !=null){
-            requestOverlayPermissionResultHandler.onResult(PermissionCompat.isOverlayGranted(getController()));
-            requestOverlayPermissionResultHandler = null;
+    public boolean onSpecialPermissionResult(){
+        if (sepecialPermission !=null){
+            requestSpecialPermissionResultHandler.onResult(PermissionCompat.specialPermissionGranted(getController(),sepecialPermission));
+            requestSpecialPermissionResultHandler = null;
+            sepecialPermission = null;
             return true;
         }
         return false;
@@ -91,7 +94,7 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
     @Override
     public final void requestPermissions(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting) {
         if (Arrays.binarySearch(permissions, Manifest.permission.SYSTEM_ALERT_WINDOW) >= 0) {
-            throw new IllegalArgumentException("Please Call requestOverlayPermission(int requestCode, Runnable runnable) for SYSTEM_ALERT_WINDOW!");
+            throw new IllegalArgumentException("Please Call requestSpecialPermission(int requestCode, Runnable runnable) for SYSTEM_ALERT_WINDOW!");
         }
         permissionHelper.requestPermissions(permissions, requestCode, runnable, forceAccepting);
     }

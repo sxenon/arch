@@ -114,25 +114,6 @@ public class PermissionHelper {
     }
 
     /**
-     * used only for {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW}
-     *
-     * @return Return true if isOverlayGranted already;
-     */
-    public boolean showOverlayAtOnce(int what, Runnable runnable) {
-        if (!PermissionCompat.isOverlayGranted(controller)) {
-            permissionEvent = new Event();
-            permissionEvent.what = what;
-            permissionEvent.obj = runnable;
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + controller.getContext().getPackageName()));
-            controller.startActivityForResult(intent, what);
-            return false;
-        } else {
-            runnable.run();
-            return true;
-        }
-    }
-
-    /**
      * to be called when explanation is presented to the user
      */
     public void requestPermissionsAfterExplanation(@NonNull String[] permissions) {

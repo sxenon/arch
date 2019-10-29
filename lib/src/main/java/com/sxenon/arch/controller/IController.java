@@ -25,7 +25,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.sxenon.arch.controller.handler.ActivityResultHandler;
-import com.sxenon.arch.controller.handler.RequestOverlayPermissionResultHandler;
+import com.sxenon.arch.controller.handler.RequestSpecialPermissionResultHandler;
 import com.sxenon.arch.controller.impl.AbstractControllerVisitorAsPresenter;
 import com.sxenon.arch.mvp.IView;
 import com.sxenon.arch.viewmodule.ILoadingView;
@@ -53,7 +53,13 @@ public interface IController<P extends AbstractControllerVisitorAsPresenter> ext
 
     void requestPermissionsCompact(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting);
 
-    void requestOverlayPermission(int requestCode, RequestOverlayPermissionResultHandler handler);
+    /**
+     * There are a couple of permissions that don't behave like normal and dangerous permissions.
+     * SYSTEM_ALERT_WINDOW and WRITE_SETTINGS are particularly sensitive, so most apps should not use them.
+     * If an app needs one of these permissions, it must declare the permission in the manifest, and send an intent requesting the user's authorization.
+     * The system responds to the intent by showing a detailed management screen to the user.
+     */
+    void requestSpecialPermission(int requestCode, RequestSpecialPermissionResultHandler handler, String specialPermission);
 
     /**
      * @return Return false if the controller is instance of FragmentActivity and its supportFragment request the permission,otherwise true.

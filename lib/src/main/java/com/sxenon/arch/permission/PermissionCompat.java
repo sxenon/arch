@@ -16,6 +16,7 @@
 
 package com.sxenon.arch.permission;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -32,6 +33,7 @@ import com.sxenon.arch.controller.IController;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Inspired by https://github.com/k0shk0sh/PermissionHelper
@@ -134,16 +136,57 @@ public class PermissionCompat {
         return false;
     }
 
+    public static boolean specialPermissionGranted(@NonNull IController controller,String specialPermission){
+        switch (specialPermission){
+            case Manifest.permission.SYSTEM_ALERT_WINDOW:
+                return canDrawOverlays(controller);
+            case Manifest.permission.WRITE_SETTINGS:
+                return canWriteSettings(controller);
+            default:
+                throw new IllegalArgumentException(specialPermission+"may not exist or is not special");
+        }
+    }
+
     /**
      * @return true if {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} is granted
      */
-    public static boolean isOverlayGranted(@NonNull IController controller) {
+    private static boolean canDrawOverlays(@NonNull IController controller) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(controller.getContext());
     }
 
+    /**
+     * @return true if {@link android.Manifest.permission#WRITE_SETTINGS} is granted
+     */
+    private static boolean canWriteSettings(@NonNull IController controller){
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.System.canWrite(controller.getContext());
+    }
+
+    public static void requestSpecialPermission(@NonNull IController controller, int requestCode,String specialPermission){
+        switch (specialPermission){
+            case Manifest.permission.SYSTEM_ALERT_WINDOW:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestOverlayPermission(controller, requestCode);
+                }
+                break;
+             case Manifest.permission.WRITE_SETTINGS:
+                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                     requestWriteSettings(controller, requestCode);
+                 }
+                 break;
+             default:
+                 throw new IllegalArgumentException(specialPermission+"may not exist or is not special");
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void requestOverlayPermission(@NonNull IController controller, int requestCode){
+    private static void requestOverlayPermission(@NonNull IController controller, int requestCode){
         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + controller.getContext().getPackageName()));
+        controller.startActivityForResult(intent, requestCode);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private static void requestWriteSettings(@NonNull IController controller, int requestCode){
+        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS , Uri.parse("package:" + controller.getContext().getPackageName()));
         controller.startActivityForResult(intent, requestCode);
     }
 }
