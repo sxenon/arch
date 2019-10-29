@@ -72,7 +72,7 @@ public class PermissionHelper {
     /**
      * used only for {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW}
      */
-    public void onRequestSystemAlertPermissionResult(int resultCode) {
+    public void onRequestOverlayPermissionResult(int resultCode) {
         if (AppCompatActivity.RESULT_OK == resultCode) {
             permissionCallback.onPermissionGranted((Runnable) permissionEvent.obj);
         } else {
@@ -116,10 +116,10 @@ public class PermissionHelper {
     /**
      * used only for {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW}
      *
-     * @return Return true if isSystemAlertGranted already;
+     * @return Return true if isOverlayGranted already;
      */
-    public boolean showSystemAlertAtOnce(int what, Runnable runnable) {
-        if (!PermissionCompat.isSystemAlertGranted(controller)) {
+    public boolean showOverlayAtOnce(int what, Runnable runnable) {
+        if (!PermissionCompat.isOverlayGranted(controller)) {
             permissionEvent = new Event();
             permissionEvent.what = what;
             permissionEvent.obj = runnable;

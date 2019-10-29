@@ -137,12 +137,12 @@ public class PermissionCompat {
     /**
      * @return true if {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} is granted
      */
-    public static boolean isSystemAlertGranted(@NonNull IController controller) {
+    public static boolean isOverlayGranted(@NonNull IController controller) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(controller.getContext());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void requestSystemAlertPermission(@NonNull IController controller, int requestCode){
+    public static void requestOverlayPermission(@NonNull IController controller, int requestCode){
         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + controller.getContext().getPackageName()));
         controller.startActivityForResult(intent, requestCode);
     }

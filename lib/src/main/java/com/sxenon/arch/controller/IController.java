@@ -24,13 +24,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.sxenon.arch.controller.handler.ActivityResultHandler;
+import com.sxenon.arch.controller.handler.RequestOverlayPermissionResultHandler;
 import com.sxenon.arch.controller.impl.AbstractControllerVisitorAsPresenter;
 import com.sxenon.arch.mvp.IView;
 import com.sxenon.arch.viewmodule.ILoadingView;
 import com.sxenon.arch.viewmodule.IViewModule;
 
 /**
- * Treat Activity & Fragment as router
+ * Treat Activity & Fragment as controller
  * Architecture: IController-->{@link IViewModule} with Business logic/ViewGroup-->View/Adapter
  * Created by Sui on 2016/11/20.
  */
@@ -51,7 +53,7 @@ public interface IController<P extends AbstractControllerVisitorAsPresenter> ext
 
     void requestPermissionsCompact(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting);
 
-    void requestSystemAlertPermission(int requestCode, RequestSystemAlertPermissionResultHandler handler);
+    void requestOverlayPermission(int requestCode, RequestOverlayPermissionResultHandler handler);
 
     /**
      * @return Return false if the controller is instance of FragmentActivity and its supportFragment request the permission,otherwise true.

@@ -27,10 +27,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import com.sxenon.arch.controller.ActivityResultHandler;
+import com.sxenon.arch.controller.handler.ActivityResultHandler;
 import com.sxenon.arch.controller.IActivity;
-import com.sxenon.arch.controller.RequestSystemAlertPermissionResultHandler;
-import com.sxenon.arch.permission.PermissionCompat;
+import com.sxenon.arch.controller.handler.RequestOverlayPermissionResultHandler;
 
 /**
  * To be the purest wrapper for Activity
@@ -87,8 +86,8 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
     }
 
     @Override
-    public void requestSystemAlertPermission(int requestCode, RequestSystemAlertPermissionResultHandler handler) {
-        getPresenter().requestSystemAlertPermission(requestCode, handler);
+    public void requestOverlayPermission(int requestCode, RequestOverlayPermissionResultHandler handler) {
+        getPresenter().requestOverlayPermission(requestCode, handler);
     }
 
     @Override
@@ -105,11 +104,11 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
 
     @Override
     protected final void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (getPresenter().onSystemAlertPermissionResult()){
+        if (getPresenter().onOverlayPermissionResult()){
             return;
         }
         if (activityResultHandler!=null){ //是Activity 发起的
-            activityResultHandler.onActivityResult(requestCode, resultCode, data);
+            activityResultHandler.onResult(requestCode, resultCode, data);
             activityResultHandler = null;
         }else {
             super.onActivityResult(requestCode, resultCode, data);
