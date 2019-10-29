@@ -70,8 +70,8 @@ public abstract class AbstractSupportFragment<P extends AbstractControllerVisito
     }
 
     @Override
-    public void requestPermissionsCompact(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting) {
-        getPresenter().setPermissionEvent(requestCode, runnable, forceAccepting);
+    public void requestPermissionsWithHandler(@NonNull String[] permissions, int requestCode, Runnable runnable) {
+        getPresenter().setPermissionEvent(requestCode, runnable);
         requestPermissions(permissions, requestCode);
     }
 

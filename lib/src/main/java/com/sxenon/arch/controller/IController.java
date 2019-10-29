@@ -51,7 +51,7 @@ public interface IController<P extends AbstractControllerVisitorAsPresenter> ext
 
     Activity getActivityCompact();
 
-    void requestPermissionsCompact(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting);
+    void requestPermissionsWithHandler(@NonNull String[] permissions, int requestCode, Runnable runnable);
 
     /**
      * There are a couple of permissions that don't behave like normal and dangerous permissions.

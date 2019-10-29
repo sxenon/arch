@@ -26,8 +26,5 @@ public interface OnPermissionCallback {
 
     void onPermissionPermanentlyDeclined(int requestCode, @NonNull String[] permissions);
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    boolean shouldExplainPermissionBeforeRequest(int requestCode, String[] permissions);
-
     boolean shouldShowRequestPermissionRationale(@NonNull String permission);
 }

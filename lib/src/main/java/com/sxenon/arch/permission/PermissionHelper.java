@@ -16,14 +16,9 @@
 
 package com.sxenon.arch.permission;
 
-import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 
 import com.sxenon.arch.Event;
 import com.sxenon.arch.controller.IController;
@@ -41,7 +36,6 @@ public class PermissionHelper {
     private final OnPermissionCallback permissionCallback;
     @NonNull
     private final IController controller;
-    private final String KEY_FORCE_ACCEPTING = "forceAccepting";
 
     public PermissionHelper(@NonNull IController controller, @NonNull OnPermissionCallback permissionCallback) {
         this.controller = controller;
@@ -57,26 +51,8 @@ public class PermissionHelper {
             if (!permissionPermanentlyDeniedList.isEmpty()) {
                 permissionCallback.onPermissionPermanentlyDeclined(permissionEvent.what, permissionPermanentlyDeniedList.toArray(new String[permissionPermanentlyDeniedList.size()]));
             } else {
-                if (permissionEvent.data.getBoolean(KEY_FORCE_ACCEPTING, false)) {
-                    if (!permissionCallback.shouldExplainPermissionBeforeRequest(permissionEvent.what, declinedPermissions)) {
-                        controller.requestPermissionsCompact(declinedPermissions, permissionEvent.what, (Runnable) permissionEvent.obj, permissionEvent.data.getBoolean(KEY_FORCE_ACCEPTING, false));
-                    }
-                    return;
-                }
                 permissionCallback.onPermissionDeclined(permissionEvent.what, declinedPermissions);
             }
-        }
-        permissionEvent = null;
-    }
-
-    /**
-     * used only for {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW}
-     */
-    public void onRequestOverlayPermissionResult(int resultCode) {
-        if (AppCompatActivity.RESULT_OK == resultCode) {
-            permissionCallback.onPermissionGranted((Runnable) permissionEvent.obj);
-        } else {
-            permissionCallback.onPermissionDeclined(permissionEvent.what, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW});
         }
         permissionEvent = null;
     }
@@ -85,12 +61,11 @@ public class PermissionHelper {
         return permissionEvent;
     }
 
-    public void setPermissionEvent(int what, Runnable runnable, boolean forceAccepting) {
+    public void setPermissionEvent(int what, Runnable runnable) {
         permissionEvent = new Event();
         permissionEvent.what = what;
         permissionEvent.obj = runnable;
         permissionEvent.data = new Bundle();
-        permissionEvent.data.putBoolean(KEY_FORCE_ACCEPTING, forceAccepting);
     }
 
     public void requestPermissions(@NonNull String[] permissions, int what, Runnable runnable, boolean forceAccepting) {
@@ -107,17 +82,14 @@ public class PermissionHelper {
             return;
         }
 
-        setPermissionEvent(what, runnable, forceAccepting);
-        if (!permissionCallback.shouldExplainPermissionBeforeRequest(what, permissionsNeedArray)) {
-            controller.requestPermissionsCompact(permissionsNeedArray, what, runnable, forceAccepting);
-        }
+        setPermissionEvent(what, runnable);
     }
 
     /**
      * to be called when explanation is presented to the user
      */
     public void requestPermissionsAfterExplanation(@NonNull String[] permissions) {
-        controller.requestPermissionsCompact(permissions, permissionEvent.what, (Runnable) permissionEvent.obj, permissionEvent.data.getBoolean(KEY_FORCE_ACCEPTING, false));
+        controller.requestPermissionsWithHandler(permissions, permissionEvent.what, (Runnable) permissionEvent.obj);
     }
 
     /**

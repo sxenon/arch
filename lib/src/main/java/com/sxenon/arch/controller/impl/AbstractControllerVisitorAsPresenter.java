@@ -37,7 +37,7 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
 
     private final PermissionHelper permissionHelper;
     private RequestSpecialPermissionResultHandler requestSpecialPermissionResultHandler;
-    private String sepecialPermission;
+    private String specialPermission;
 
     public static final String TAG = "AbstractControllerVisitorAsPresenter";
 
@@ -47,8 +47,8 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
     }
 
     //Permission start
-    public void setPermissionEvent(int what, Runnable runnable, boolean forceAccepting) {
-        permissionHelper.setPermissionEvent(what, runnable, forceAccepting);
+    public void setPermissionEvent(int what, Runnable runnable) {
+        permissionHelper.setPermissionEvent(what, runnable);
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
         try {
             if (getController().requestPermissionsBySelf(requestCode)) {
                 if (permissionHelper.getPermissionEvent() == null) {
-                    throw new IllegalStateException("Please call requestPermissionsCompact in controller(view) or requestPermissions in controllerVisitor(presenter)");
+                    throw new IllegalStateException("Please call requestPermissionsWithHandler in controller(view) or requestPermissions in controllerVisitor(presenter)");
                 }
                 permissionHelper.onRequestPermissionsResult(permissions, grantResults);
                 return true;
@@ -71,21 +71,21 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
         return false;
     }
 
-    public void requestSpecialPermission(int requestCode, RequestSpecialPermissionResultHandler handler, String specialPermission){
+    void requestSpecialPermission(int requestCode, RequestSpecialPermissionResultHandler handler, String specialPermission){
         if (PermissionCompat.specialPermissionGranted(getController(),specialPermission)){
             handler.onResult(true);
         }else {
             requestSpecialPermissionResultHandler = handler;
-            this.sepecialPermission = specialPermission;
+            this.specialPermission = specialPermission;
             PermissionCompat.requestSpecialPermission(getController(),requestCode,specialPermission);
         }
     }
 
-    public boolean onSpecialPermissionResult(){
-        if (sepecialPermission !=null){
-            requestSpecialPermissionResultHandler.onResult(PermissionCompat.specialPermissionGranted(getController(),sepecialPermission));
+    boolean onSpecialPermissionResult(){
+        if (specialPermission !=null){
+            requestSpecialPermissionResultHandler.onResult(PermissionCompat.specialPermissionGranted(getController(), specialPermission));
             requestSpecialPermissionResultHandler = null;
-            sepecialPermission = null;
+            specialPermission = null;
             return true;
         }
         return false;
@@ -94,17 +94,12 @@ public abstract class AbstractControllerVisitorAsPresenter<C extends IController
     @Override
     public final void requestPermissions(@NonNull String[] permissions, int requestCode, Runnable runnable, boolean forceAccepting) {
         if (Arrays.binarySearch(permissions, Manifest.permission.SYSTEM_ALERT_WINDOW) >= 0) {
-            throw new IllegalArgumentException("Please Call requestSpecialPermission(int requestCode, Runnable runnable) for SYSTEM_ALERT_WINDOW!");
+            throw new IllegalArgumentException("Please Call requestSpecialPermission for SYSTEM_ALERT_WINDOW!");
+        }
+        if (Arrays.binarySearch(permissions, Manifest.permission.WRITE_SETTINGS) >= 0) {
+            throw new IllegalArgumentException("Please Call requestSpecialPermission(int requestCode, Runnable runnable) for WRITE_SETTINGS!");
         }
         permissionHelper.requestPermissions(permissions, requestCode, runnable, forceAccepting);
-    }
-
-    /**
-     * @return if true,don`t forget to call {@link #requestPermissionsAfterExplanation} first!
-     */
-    @Override
-    public boolean shouldExplainPermissionBeforeRequest(int requestCode, String[] permissions) {
-        return false;
     }
 
     @Override
