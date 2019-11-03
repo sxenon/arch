@@ -43,10 +43,8 @@ public interface IController<P extends AbstractControllerVisitorAsPresenter> ext
 
     void startActivity(Intent intent, Bundle options);
 
-    @Deprecated
     void startActivityForResult(Intent intent, int requestCode);
 
-    @Deprecated
     void startActivityForResult(Intent intent, int requestCode,@Nullable Bundle options);
 
     /**
@@ -61,7 +59,6 @@ public interface IController<P extends AbstractControllerVisitorAsPresenter> ext
      */
     void requestPermissionsWithAction(@NonNull String[] permissions, int requestCode, Runnable runnable);
 
-    @Deprecated
     void requestPermissions(@NonNull String[] permissions, int requestCode);
 
     /**

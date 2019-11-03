@@ -23,18 +23,33 @@ import com.sxenon.arch.usecase.scheduler.SimpleUseCaseScheduler;
 /**
  * Runs {@link UseCase}s using a {@link UseCaseScheduler}.
  */
-public enum UseCaseHandler {
+public class UseCaseHandler {
+    private static final UseCaseHandler SIMPLE;
+    private static final UseCaseHandler ASYNC;
+    private static final UseCaseHandler UI;
 
-    INSTANCE(new SimpleUseCaseScheduler()),
-
-   ASYNC_INSTANCE(new AsyncUseCaseScheduler()),
-
-   CALLBACK_ON_UI_INSTANCE(new CallbackOnUiUseCaseScheduler());
+    static {
+        SIMPLE = new UseCaseHandler(new SimpleUseCaseScheduler());
+        ASYNC = new UseCaseHandler(new AsyncUseCaseScheduler());
+        UI = new UseCaseHandler(new CallbackOnUiUseCaseScheduler());
+    }
 
     private final UseCaseScheduler mUseCaseScheduler;
 
     UseCaseHandler(UseCaseScheduler useCaseScheduler) {
         mUseCaseScheduler = useCaseScheduler;
+    }
+
+    public static UseCaseHandler simple(){
+        return SIMPLE;
+    }
+
+    public static UseCaseHandler async(){
+        return ASYNC;
+    }
+
+    public static UseCaseHandler ui(){
+        return UI;
     }
 
     public <T extends UseCase.RequestValues, R extends UseCase.ResponseValue> void execute(
