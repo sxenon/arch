@@ -30,6 +30,6 @@ public class Event {
     public int what;
     public Object obj;
     public int arg1;
-    public String arg2;
+    public int arg2;
     public Bundle data;
 }
