@@ -2,9 +2,8 @@ package com.sxenon.arch.usecase.scheduler;
 
 import com.sxenon.arch.GlobalUiHandler;
 import com.sxenon.arch.usecase.UseCase;
-import com.sxenon.arch.usecase.UseCaseScheduler;
 
-public class CallbackOnUiUseCaseScheduler implements UseCaseScheduler {
+public class CallbackOnUiUseCaseScheduler extends BaseUseCaseScheduler {
     @Override
     public void execute(Runnable runnable) {
         runnable.run();
@@ -15,7 +14,7 @@ public class CallbackOnUiUseCaseScheduler implements UseCaseScheduler {
         GlobalUiHandler.getInstance().post(new Runnable() {
             @Override
             public void run() {
-                useCaseCallback.onSuccess(response);
+               CallbackOnUiUseCaseScheduler.super.notifyResponse(response, useCaseCallback);
             }
         });
     }
@@ -25,7 +24,7 @@ public class CallbackOnUiUseCaseScheduler implements UseCaseScheduler {
         GlobalUiHandler.getInstance().post(new Runnable() {
             @Override
             public void run() {
-                useCaseCallback.onError(throwable);
+                CallbackOnUiUseCaseScheduler.super.onError(useCaseCallback, throwable);
             }
         });
     }

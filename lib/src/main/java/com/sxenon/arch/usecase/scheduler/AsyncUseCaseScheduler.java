@@ -16,15 +16,9 @@
 
 package com.sxenon.arch.usecase.scheduler;
 
-import android.os.Handler;
-
-import com.sxenon.arch.usecase.UseCase;
-import com.sxenon.arch.usecase.UseCaseScheduler;
-
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Executes asynchronous tasks using a {@link ThreadPoolExecutor}.
@@ -32,48 +26,16 @@ import java.util.concurrent.TimeUnit;
  * See also {@link Executors} for a list of factory methods to create common
  * {@link java.util.concurrent.ExecutorService}s for different scenarios.
  */
-public class AsyncUseCaseScheduler implements UseCaseScheduler {
+public class AsyncUseCaseScheduler extends BaseUseCaseScheduler {
 
-    private final Handler mHandler = new Handler();
+    private final Executor mExecutor;
 
-    private static final int POOL_SIZE = 10;
-
-    private static final int MAX_POOL_SIZE = 100;
-
-    private static final int TIMEOUT = 30;
-
-    private final ThreadPoolExecutor mThreadPoolExecutor;
-
-    public AsyncUseCaseScheduler() {
-        mThreadPoolExecutor = new ThreadPoolExecutor(POOL_SIZE, MAX_POOL_SIZE, TIMEOUT,
-                TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(POOL_SIZE));
+    public AsyncUseCaseScheduler(Executor executor) {
+        mExecutor = executor;
     }
 
     @Override
     public void execute(Runnable runnable) {
-        mThreadPoolExecutor.execute(runnable);
+        mExecutor.execute(runnable);
     }
-
-    @Override
-    public <V extends UseCase.ResponseValue> void notifyResponse(final V response,
-                                                                 final UseCase.UseCaseCallback<V> useCaseCallback) {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                useCaseCallback.onSuccess(response);
-            }
-        });
-    }
-
-    @Override
-    public <V extends UseCase.ResponseValue> void onError(
-            final UseCase.UseCaseCallback<V> useCaseCallback, final Throwable throwable) {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                useCaseCallback.onError(throwable);
-            }
-        });
-    }
-
 }
