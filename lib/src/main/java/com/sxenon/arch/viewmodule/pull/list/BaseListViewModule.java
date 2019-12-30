@@ -96,8 +96,6 @@ public class BaseListViewModule<R, PL extends IPullLayout> extends BasePullViewM
         }
     }
 
-
-
     @Override
     public void onError(Throwable throwable) {
         super.onError(throwable);

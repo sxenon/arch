@@ -76,6 +76,11 @@ public abstract class BaseVerificationCodeUseCase extends UseCase<BaseVerificati
         }
     }
 
+    /**
+     * 可以基于RxJava或者其他的实现
+     * @param secondsInFuture
+     * @param countDownListener
+     */
     protected abstract void startCountDown(final int secondsInFuture, final CountDownListener countDownListener);
 
 }

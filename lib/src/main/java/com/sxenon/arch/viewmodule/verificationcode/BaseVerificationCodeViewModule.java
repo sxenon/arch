@@ -45,8 +45,12 @@ public abstract class BaseVerificationCodeViewModule implements IViewModule, IRe
     /*
         点了发送验证码的按钮，成功发送，才会启动冷却。所以是被动的
      */
-    public abstract void startCountDown(int secondsInFuture);
 
+    /**
+     * 先创建一个BaseVerificationCodeUseCase 然后再调用excuse方法。
+     * @param secondsInFuture
+     */
+    public abstract void startCountDown(int secondsInFuture);
 
     public IController getController() {
         return mController;
@@ -70,4 +74,8 @@ public abstract class BaseVerificationCodeViewModule implements IViewModule, IRe
 
     }
 
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
 }
