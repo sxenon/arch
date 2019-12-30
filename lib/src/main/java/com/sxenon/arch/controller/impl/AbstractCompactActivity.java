@@ -39,7 +39,6 @@ import com.sxenon.arch.controller.handler.RequestSpecialPermissionResultHandler;
 
 public abstract class AbstractCompactActivity<P extends AbstractControllerVisitorAsPresenter> extends AppCompatActivity implements IActivity<P> {
     private P mPresenter;
-    private boolean isResume;
     private ActivityResultHandler activityResultHandler;
 
     @Override
@@ -129,22 +128,5 @@ public abstract class AbstractCompactActivity<P extends AbstractControllerVisito
     @Override
     public Bundle getBundle() {
         return getIntent().getExtras();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        isResume = true;
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        isResume = false;
-    }
-
-    @Override
-    public boolean isReallyVisibleToUser() {
-        return isResume;
     }
 }

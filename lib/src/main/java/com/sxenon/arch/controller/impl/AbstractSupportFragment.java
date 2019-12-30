@@ -40,7 +40,6 @@ import com.sxenon.arch.controller.handler.RequestSpecialPermissionResultHandler;
 public abstract class AbstractSupportFragment<P extends AbstractControllerVisitorAsPresenter> extends Fragment implements IFragment<P> {
     private AppCompatActivity mHost;
     private P mPresenter;
-    private boolean isResumed;
     private ActivityResultHandler activityResultHandler;
 
     @Override
@@ -129,22 +128,5 @@ public abstract class AbstractSupportFragment<P extends AbstractControllerVisito
     @Override
     public void finish() {
         getActivityCompact().finish();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        isResumed = true;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        isResumed = false;
-    }
-
-    @Override
-    public boolean isReallyVisibleToUser() {
-        return isResumed&&getUserVisibleHint();
     }
 }

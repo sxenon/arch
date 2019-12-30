@@ -94,6 +94,4 @@ public interface IController<P extends AbstractControllerVisitorAsPresenter> ext
     Bundle getBundle();
 
     void finish();
-
-    boolean isReallyVisibleToUser();
 }
