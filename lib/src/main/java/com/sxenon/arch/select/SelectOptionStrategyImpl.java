@@ -34,7 +34,7 @@ public class SelectOptionStrategyImpl<T> implements ISelectOptionStrategy<T> {
     }
 
     @Override
-    public void onOptionSelected(List<Boolean> selectedFlags, int position, ISelectChangeNotifier notifier) {
+    public void onOptionSelected(List<Boolean> selectedFlags, int position, IOptionChangeNotifier notifier) {
         if (selectedFlags.get(position)) {
             return;
         }
@@ -44,7 +44,7 @@ public class SelectOptionStrategyImpl<T> implements ISelectOptionStrategy<T> {
     }
 
     @Override
-    public void onOptionUnSelected(List<Boolean> selectedFlags, int position, ISelectChangeNotifier notifier) {
+    public void onOptionUnSelected(List<Boolean> selectedFlags, int position, IOptionChangeNotifier notifier) {
         if (!selectedFlags.get(position)) {
             return;
         }
@@ -54,30 +54,24 @@ public class SelectOptionStrategyImpl<T> implements ISelectOptionStrategy<T> {
     }
 
     @Override
-    public void onAllOptionsReversed(List<Boolean> selectedFlags, ISelectChangeNotifier notifier) {
+    public void onAllOptionsReversed(List<Boolean> selectedFlags, IOptionChangeNotifier notifier) {
         List<Boolean> oldSelectedFlags = new ArrayList<>(selectedFlags);
         innerSelectStrategy.onAllOptionsReversed(selectedFlags);
         notifier.notifySelectChange(oldSelectedFlags,selectedFlags);
     }
 
     @Override
-    public void onAllOptionsSelected(List<Boolean> selectedFlags, ISelectChangeNotifier notifier) {
+    public void onAllOptionsSelected(List<Boolean> selectedFlags, IOptionChangeNotifier notifier) {
         List<Boolean> oldSelectedFlags = new ArrayList<>(selectedFlags);
         innerSelectStrategy.onAllOptionsSelected(selectedFlags);
         notifier.notifySelectChange(oldSelectedFlags,selectedFlags);
     }
 
     @Override
-    public void onAllOptionsUnSelected(List<Boolean> selectedFlags, ISelectChangeNotifier notifier) {
+    public void onAllOptionsUnSelected(List<Boolean> selectedFlags, IOptionChangeNotifier notifier) {
         List<Boolean> oldSelectedFlags = new ArrayList<>(selectedFlags);
         innerSelectStrategy.onAllOptionsUnSelected(selectedFlags);
         notifier.notifySelectChange(oldSelectedFlags,selectedFlags);
-    }
-
-    @Override
-    public void onOptionAppended(List<Boolean> selectedFlags, T data, IOptionChangeNotifier<T> notifier) {
-        selectedFlags.add(false);
-        notifier.onOptionAppended(data);
     }
 
     @Override

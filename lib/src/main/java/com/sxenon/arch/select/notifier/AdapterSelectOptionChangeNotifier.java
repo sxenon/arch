@@ -1,11 +1,12 @@
 package com.sxenon.arch.select.notifier;
 
 import com.sxenon.arch.adapter.IAdapter;
-import com.sxenon.arch.select.ISelectOptionChangeNotifier;
+import com.sxenon.arch.select.IOptionChangeNotifier;
 
+import java.util.Iterator;
 import java.util.List;
 
-public class AdapterSelectOptionChangeNotifier<T> implements ISelectOptionChangeNotifier<T> {
+public class AdapterSelectOptionChangeNotifier<T> implements IOptionChangeNotifier<T> {
     private final IAdapter<T> adapter;
 
     public AdapterSelectOptionChangeNotifier(IAdapter<T> adapter) {
@@ -15,11 +16,6 @@ public class AdapterSelectOptionChangeNotifier<T> implements ISelectOptionChange
     @Override
     public void notifySelectChange(List<Boolean> oldSelectedFlags, List<Boolean> newSelectedFlags) {
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onOptionAppended(T data) {
-        adapter.addItemFromEnd(data);
     }
 
     @Override
@@ -39,7 +35,12 @@ public class AdapterSelectOptionChangeNotifier<T> implements ISelectOptionChange
             }
         }
         if (selected) {
-            selectedFlags.remove(true);
+            Iterator<Boolean> iterator = selectedFlags.iterator();
+            while (iterator.hasNext()) {
+                if (iterator.next()) {
+                    iterator.remove();
+                }
+            }
             adapter.notifyDataSetChanged();
         }
     }
@@ -48,13 +49,4 @@ public class AdapterSelectOptionChangeNotifier<T> implements ISelectOptionChange
         return adapter;
     }
 
-    @Override
-    public int getItemCount() {
-        return adapter.getItemCount();
-    }
-
-    @Override
-    public void resetAllItems(List<T> values) {
-        adapter.resetAllItems(values);
-    }
 }

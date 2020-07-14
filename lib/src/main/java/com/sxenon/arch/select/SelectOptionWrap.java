@@ -6,21 +6,12 @@ import java.util.List;
 public class SelectOptionWrap<T>{
     private List<Boolean> selectedFlags;
     private final ISelectOptionStrategy<T> selectStrategy;
-    private final ISelectOptionChangeNotifier<T> notifier;
+    private final IOptionChangeNotifier<T> notifier;
 
-    public SelectOptionWrap(ISelectOptionStrategy<T> selectStrategy, ISelectOptionChangeNotifier<T> adapter) {
+    public SelectOptionWrap(ISelectOptionStrategy<T> selectStrategy, IOptionChangeNotifier<T> notifier,List<Boolean> selectedFlags) {
         this.selectStrategy = selectStrategy;
-        this.notifier = adapter;
-        selectedFlags = new ArrayList<>(adapter.getItemCount());
-    }
-
-    public void resetAllItems(List<T> values) {
-        notifier.resetAllItems(values);
-        selectedFlags = new ArrayList<>(notifier.getItemCount());
-    }
-
-    public void appendOption(T data) {
-        selectStrategy.onOptionAppended(selectedFlags, data, notifier);
+        this.notifier = notifier;
+        this.selectedFlags = selectedFlags;
     }
 
     public void removeOption(int position) {

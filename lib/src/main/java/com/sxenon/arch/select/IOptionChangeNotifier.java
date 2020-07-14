@@ -2,8 +2,8 @@ package com.sxenon.arch.select;
 
 import java.util.List;
 
-interface IOptionChangeNotifier<T> {
-    void onOptionAppended(T data);
+public interface IOptionChangeNotifier<T> {
     void onOptionRemoved(int position);
     void onSelectedOptionsRemoved(List<Boolean> selectedFlags);
+    void notifySelectChange(List<Boolean> oldSelectedFlags, List<Boolean> newSelectedFlags);
 }

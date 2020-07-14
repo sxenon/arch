@@ -3,31 +3,17 @@ package com.sxenon.arch.select.notifier.rv;
 import android.support.v7.util.DiffUtil;
 
 import com.sxenon.arch.adapter.rv.RecyclerViewAdapter;
-import com.sxenon.arch.select.ISelectOptionChangeNotifier;
+import com.sxenon.arch.select.IOptionChangeNotifier;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class RecyclerViewAdapterSelectOptionChangeNotifier<T> implements ISelectOptionChangeNotifier<T> {
+public class RecyclerViewAdapterSelectOptionChangeNotifier<T> implements IOptionChangeNotifier<T> {
     private final RecyclerViewAdapter<T> adapter;
 
     public RecyclerViewAdapterSelectOptionChangeNotifier(RecyclerViewAdapter<T> adapter) {
         this.adapter = adapter;
-    }
-
-    @Override
-    public int getItemCount() {
-        return adapter.getItemCount();
-    }
-
-    @Override
-    public void resetAllItems(List<T> values) {
-        adapter.resetAllItems(values);
-    }
-
-    @Override
-    public void onOptionAppended(T data) {
-        adapter.addItemFromEnd(data);
     }
 
     @Override
@@ -48,14 +34,18 @@ public class RecyclerViewAdapterSelectOptionChangeNotifier<T> implements ISelect
         for (int position = size - 1; position >= 0; position--) {
             if (selectedFlags.get(position)) {
                 afterRemoved.remove(position);
-                adapter.removeItem(position);
                 selected=true;
             }
         }
 
         if (selected){
-            selectedFlags.remove(true);
-
+            Iterator<Boolean> iterator = selectedFlags.iterator();
+            while (iterator.hasNext()){
+                if (iterator.next()){
+                    iterator.remove();
+                }
+            }
+            //TODO
             DiffUtil.DiffResult result = DiffUtil.calculateDiff(new RemoveDiffCallBack(beforeRemoved, afterRemoved), false);
             result.dispatchUpdatesTo(adapter);
         }

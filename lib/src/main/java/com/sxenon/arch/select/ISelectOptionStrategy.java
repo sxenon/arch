@@ -24,17 +24,15 @@ import java.util.List;
  */
 
 public interface ISelectOptionStrategy<T> {
-    void onOptionSelected(List<Boolean> selectedFlags, int position, ISelectChangeNotifier notifier);
+    void onOptionSelected(List<Boolean> selectedFlags, int position, IOptionChangeNotifier notifier);
 
-    void onOptionUnSelected(List<Boolean> selectedFlags, int position, ISelectChangeNotifier notifier);
+    void onOptionUnSelected(List<Boolean> selectedFlags, int position, IOptionChangeNotifier notifier);
 
-    void onAllOptionsReversed(List<Boolean> selectedFlags, ISelectChangeNotifier notifier);
+    void onAllOptionsReversed(List<Boolean> selectedFlags, IOptionChangeNotifier notifier);
 
-    void onAllOptionsSelected(List<Boolean> selectedFlags, ISelectChangeNotifier notifier);
+    void onAllOptionsSelected(List<Boolean> selectedFlags, IOptionChangeNotifier notifier);
 
-    void onAllOptionsUnSelected(List<Boolean> selectedFlags, ISelectChangeNotifier notifier);
-
-    void onOptionAppended(List<Boolean> selectedFlags, T data, IOptionChangeNotifier<T> notifier);
+    void onAllOptionsUnSelected(List<Boolean> selectedFlags, IOptionChangeNotifier notifier);
 
     void onOptionRemoved(List<Boolean> selectedFlags, int position, IOptionChangeNotifier<T> notifier);
 
