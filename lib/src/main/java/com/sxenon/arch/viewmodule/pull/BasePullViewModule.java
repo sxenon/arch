@@ -56,19 +56,17 @@ public abstract class BasePullViewModule<PL extends IPullLayout,S extends IPullS
         mContext = context;
     }
 
-    public BasePullViewModule setExtraComponents(View emptyView, View exceptionView) {
+    public void setExtraComponents(View emptyView, View exceptionView) {
         mEmptyView = emptyView;
         mExceptionView = exceptionView;
 
         CommonUtils.setViewVisibility(mEmptyView, View.GONE);
         CommonUtils.setViewVisibility(mExceptionView, View.GONE);
-        return this;
     }
 
-    public BasePullViewModule resetExtraComponents(View emptyView, View exceptionView) {
+    public void resetExtraComponents(View emptyView, View exceptionView) {
         mEmptyView = emptyView;
         mExceptionView = exceptionView;
-        return this;
     }
 
     public void endAllAnim() {
